@@ -1,0 +1,6 @@
+flask
+torch
+transformers
+sentencepiece
+psycopg2
+cors

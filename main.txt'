@@ -1,0 +1,69 @@
+from flask import Flask
+from flask import request
+import json
+from transformers import T5ForConditionalGeneration, T5Tokenizer, AdamW
+from torch.utils.data import DataLoader, Dataset
+import torch
+import psycopg2
+
+user="default"
+database= "verceldb"
+password= "1HURNrWk6zfm"
+host= "ep-divine-frog-a1m53t5a-pooler.ap-southeast-1.aws.neon.tech"
+connectionString= "postgres://default:1HURNrWk6zfm@ep-divine-frog-a1m53t5a-pooler.ap-southeast-1.aws.neon.tech:5432/verceldb?sslmode=require"
+
+conn = psycopg2.connect(f"dbname={database} user={user} password={password} host={host} port={5432}")
+cur = conn.cursor()
+data = (1, "nandu", "synrreddy@gmail.com", "synr752004")
+
+# Execute the command
+cur.execute('INSERT INTO users (id, username, email, password) VALUES (%s, %s, %s, %s)', data)
+
+# Commit the changes and close the connection
+conn.commit()
+cur.close()
+conn.close()
+
+
+# app = Flask(__name__)
+
+# # load model into memory
+# # Load T5 tokenizer and model for conditional generation
+# model_name = 't5-small'
+# tokenizer = T5Tokenizer.from_pretrained("C:\\Users\\Yasho Nandan Reddy\\Downloads\\recipe")
+# model = T5ForConditionalGeneration.from_pretrained("C:\\Users\\Yasho Nandan Reddy\\Downloads\\recipe")
+# def generate_text(prompt):
+#     input_text = f"question: {prompt} "
+
+#     # Tokenize input
+#     input_ids = tokenizer.encode(input_text, return_tensors='pt', truncation=True, padding='max_length', max_length=1024)
+
+#     # Generate answer
+#     output_ids = model.generate(input_ids , max_length = 1024)
+
+#     # Decode the answer from token ids
+#     answer = tokenizer.decode(output_ids[0], skip_special_tokens=True)
+
+#     return answer
+
+
+# @app.route('/')
+# def home():
+#     return "Hello, World!"
+
+# @app.route('/predict', methods=['POST'])
+# def predict():
+#     print(request.data)
+#     # cast from byte string to normal string
+#     request_data = request.data.decode('utf-8')
+#     # convert string to json
+#     request_json = json.loads(request_data)
+#     input_string = request_json['text']
+
+#     # now we have to call the model and generate text
+#     output_string = generate_text(input_string)
+#     return output_string
+
+
+# if __name__ == '__main__':
+#     app.run(debug=True)
